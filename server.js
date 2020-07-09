@@ -43,7 +43,7 @@ function init() {
       } else if (userSelection === "Add Employees") {
         addEmployees();
       } else if (userSelection === "View Departments") {
-        viewEmployees();
+        viewDepartments();
       } else if (userSelection === "View Roles") {
         viewRoles();
       } else if (userSelection === "View Employees") {
@@ -65,41 +65,58 @@ function addDepartments() {
         message: "What department would you like to add?",
       },
     ])
-    .then(({ department }) => {
-      console.log(department);
-
-      console.log("Added department successfully");
-      init();
+    .then((response) => {
+      // console.log(department);
+      console.log(response.department);
+      const queryString = "INSERT INTO departments SET ?";
+      connection.query(
+        queryString,
+        { name: response.department },
+        (err, data) => {
+          //   if(err) throw err;
+          //   console.table(department)
+          // })
+          console.log("Added department successfully");
+          init();
+        }
+      );
     });
 }
+
+// Viewing Employees
+function viewDepartments() {
+  console.log("viewing departments");
+  connection.query("SELECT * FROM departments", (err, data) => {
+    if (err) throw err;
+    console.table(data);
+    init();
+  });
+}
+
 // Adding Roles
 function addRoles() {
-  console.log("adding roles")
+  console.log("adding roles");
   init();
 }
 // Adding Employees
 function addEmployees() {
-  console.log("adding employees")
+  console.log("adding employees");
   init();
 }
-// Viewing Employees
-function viewEmployees() {
-  console.log("viewing employees")
-  init();
-}
+
 // Viewing Roles
 function viewRoles() {
-  console.log("viewing roles")
+  console.log("viewing roles");
   init();
 }
 // Viewing Employees
 function viewEmployees() {
-  console.log("viewing employees")
+  console.log("viewing employees");
   init();
 }
 // Updating Employees
 function updateEmployees() {
-  console.log("updating employees")
+  console.log("updating employees");
   init();
 }
 // Exiting application
