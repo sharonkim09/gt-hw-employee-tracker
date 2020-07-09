@@ -145,15 +145,57 @@ function viewRoles() {
 }
 // Adding Employees
 function addEmployees() {
-  console.log("adding employees");
-  init();
+inquirer.prompt([
+  {
+    type:"input",
+    name:"firstName",
+    message:"Enter employee's first name:"
+  },
+  {
+    type:"input",
+    name:"lastName",
+    message:"Enter employee's last name:"
+  },
+  {
+    type:"input",
+    name:"roleId",
+    message:"Enter employee's role id:"
+  },
+  {
+    type:"input",
+    name:"managerId",
+    message:"Enter employee's manager id"
+  }
+]).then((response)=>{
+  console.log(response.firstName);
+  console.log(response.lastName)
+  console.log(response.roleId);
+  console.log(response.managerId)
+// first_name, last_name, role_id, manager_id
+  const queryString = "INSERT INTO employee SET ?"
+  connection.query(queryString,{
+    first_name: response.firstName,
+    last_name: response.lastName,
+    role_id: response.roleId,
+    manager_id: response.managerId
+  },(err,data)=>{
+    console.log("adding employees");
+    init();
+  })
+})
 }
 
 // Viewing Employees
 function viewEmployees() {
   console.log("viewing employees");
+  connection.query("SELECT * FROM employee", (err, data) => {
+    if (err) throw err;
+    console.table(data);
   init();
+})
 }
+
+
 // Updating Employees
 function updateEmployees() {
   console.log("updating employees");
