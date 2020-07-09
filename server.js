@@ -49,7 +49,7 @@ function init() {
       } else if (userSelection === "View Employees") {
         viewEmployees();
       } else if (userSelection === "Update Employee Roles") {
-        updateEmployees();
+        updateEmployeeRoles();
       } else if (userSelection === "Exit") {
         exit();
       }
@@ -194,14 +194,24 @@ function viewEmployees() {
   init();
 })
 }
-
-
-// Updating Employees
-function updateEmployees() {
-  console.log("updating employees");
-  init();
-}
 // Exiting application
 function exit() {
   connection.end();
+}
+
+// next steps that are REQUIRED.....
+// need to somehow use JOIN 
+// need to solve updating employee roles
+
+
+// BONUS steps
+// 1. Updating employee managers
+// 2. View employees by manager
+// 3. Delete departments, roles, and employees
+// 4. total budget in that department...
+
+// Updating Employees
+function updateEmployeeRoles() {
+  console.log("updating employees");
+  init();
 }
