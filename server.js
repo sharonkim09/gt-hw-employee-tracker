@@ -145,44 +145,50 @@ function viewRoles() {
 }
 // Adding Employees
 function addEmployees() {
-inquirer.prompt([
-  {
-    type:"input",
-    name:"firstName",
-    message:"Enter employee's first name:"
-  },
-  {
-    type:"input",
-    name:"lastName",
-    message:"Enter employee's last name:"
-  },
-  {
-    type:"input",
-    name:"roleId",
-    message:"Enter employee's role id:"
-  },
-  {
-    type:"input",
-    name:"managerId",
-    message:"Enter employee's manager id"
-  }
-]).then((response)=>{
-  console.log(response.firstName);
-  console.log(response.lastName)
-  console.log(response.roleId);
-  console.log(response.managerId)
-// first_name, last_name, role_id, manager_id
-  const queryString = "INSERT INTO employee SET ?"
-  connection.query(queryString,{
-    first_name: response.firstName,
-    last_name: response.lastName,
-    role_id: response.roleId,
-    manager_id: response.managerId
-  },(err,data)=>{
-    console.log("adding employees");
-    init();
-  })
-})
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "Enter employee's first name:",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "Enter employee's last name:",
+      },
+      {
+        type: "input",
+        name: "roleId",
+        message: "Enter employee's role id:",
+      },
+      {
+        type: "input",
+        name: "managerId",
+        message: "Enter employee's manager id",
+      },
+    ])
+    .then((response) => {
+      console.log(response.firstName);
+      console.log(response.lastName);
+      console.log(response.roleId);
+      console.log(response.managerId);
+      // first_name, last_name, role_id, manager_id
+      const queryString = "INSERT INTO employee SET ?";
+      connection.query(
+        queryString,
+        {
+          first_name: response.firstName,
+          last_name: response.lastName,
+          role_id: response.roleId,
+          manager_id: response.managerId,
+        },
+        (err, data) => {
+          console.log("adding employees");
+          init();
+        }
+      );
+    });
 }
 
 // Viewing Employees
@@ -191,8 +197,8 @@ function viewEmployees() {
   connection.query("SELECT * FROM employee", (err, data) => {
     if (err) throw err;
     console.table(data);
-  init();
-})
+    init();
+  });
 }
 // Exiting application
 function exit() {
@@ -200,9 +206,8 @@ function exit() {
 }
 
 // next steps that are REQUIRED.....
-// need to somehow use JOIN 
+// need to somehow use JOIN
 // need to solve updating employee roles
-
 
 // BONUS steps
 // 1. Updating employee managers
@@ -212,6 +217,25 @@ function exit() {
 
 // Updating Employees
 function updateEmployeeRoles() {
-  console.log("updating employees");
-  init();
+  inquirer.prompt([
+    {
+      type:"input",
+      name:"currentRoleId",
+      message:"What is employee's role id you wish to change?"
+    },
+    {
+      type:"input",
+      message:"what is employee's new role id?",
+      name:"newRoleId"
+    }
+  ]).then((response)=>{
+    console.log("updating employee role id")
+    connection.query("UPDATE employee SET ?",
+    {
+      role_id:response.newRoleId
+    },(err,data)=>{
+      if(err) throw err;
+      console.log("Successfully updated role");
+    })
+  })
 }
