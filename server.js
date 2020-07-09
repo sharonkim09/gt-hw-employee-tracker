@@ -67,15 +67,13 @@ function addDepartments() {
     ])
     .then((response) => {
       // console.log(department);
-      console.log(response.department);
+      // console.log(response.department);
       const queryString = "INSERT INTO departments SET ?";
       connection.query(
         queryString,
         { name: response.department },
         (err, data) => {
-          //   if(err) throw err;
-          //   console.table(department)
-          // })
+            if(err) throw err;
           console.log("Added department successfully");
           init();
         }
@@ -85,7 +83,7 @@ function addDepartments() {
 
 // Viewing Departments
 function viewDepartments() {
-  console.log("viewing departments");
+  // console.log("viewing departments");
   connection.query("SELECT * FROM departments", (err, data) => {
     if (err) throw err;
     console.table(data);
@@ -95,7 +93,6 @@ function viewDepartments() {
 
 // Adding Roles
 function addRoles() {
-  // console.log("adding roles");
   inquirer
     .prompt([
       {
@@ -115,9 +112,9 @@ function addRoles() {
       },
     ])
     .then((response) => {
-      console.log(response.title);
-      console.log(response.salary);
-      console.log(response.department);
+      // console.log(response.title);
+      // console.log(response.salary);
+      // console.log(response.department);
       const queryString = "INSERT INTO role SET ?";
       connection.query(
         queryString,
@@ -127,7 +124,7 @@ function addRoles() {
           department_id: response.department,
         },
         (err, data) => {
-          // if (err) throw err;
+          if (err) throw err;
           console.log("Added roles!!");
           init();
         }
@@ -136,7 +133,7 @@ function addRoles() {
 }
 // Viewing Roles
 function viewRoles() {
-  console.log("viewing roles");
+  // console.log("viewing roles");
   connection.query("SELECT * FROM role", (err, data) => {
     if (err) throw err;
     console.table(data);
@@ -169,10 +166,10 @@ function addEmployees() {
       },
     ])
     .then((response) => {
-      console.log(response.firstName);
-      console.log(response.lastName);
-      console.log(response.roleId);
-      console.log(response.managerId);
+      // console.log(response.firstName);
+      // console.log(response.lastName);
+      // console.log(response.roleId);
+      // console.log(response.managerId);
       // first_name, last_name, role_id, manager_id
       const queryString = "INSERT INTO employee SET ?";
       connection.query(
@@ -193,7 +190,7 @@ function addEmployees() {
 
 // Viewing Employees
 function viewEmployees() {
-  console.log("viewing employees");
+  // console.log("viewing employees");
   connection.query("SELECT * FROM employee", (err, data) => {
     if (err) throw err;
     console.table(data);
@@ -204,17 +201,6 @@ function viewEmployees() {
 function exit() {
   connection.end();
 }
-
-// next steps that are REQUIRED.....
-// need to somehow use JOIN
-// need to solve updating employee roles
-
-// BONUS steps
-// 1. Updating employee managers
-// 2. View employees by manager
-// 3. Delete departments, roles, and employees
-// 4. total budget in that department...
-
 // Updating Employees
 function updateEmployeeRoles() {
   inquirer.prompt([
@@ -239,3 +225,13 @@ function updateEmployeeRoles() {
     })
   })
 }
+// next steps that are REQUIRED.....
+// need to somehow use JOIN
+
+// BONUS steps
+// 1. Updating employee managers
+// 2. View employees by manager
+// 3. Delete departments, roles, and employees
+// 4. total budget in that department...
+
+
