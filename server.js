@@ -83,7 +83,7 @@ function addDepartments() {
     });
 }
 
-// Viewing Employees
+// Viewing Departments
 function viewDepartments() {
   console.log("viewing departments");
   connection.query("SELECT * FROM departments", (err, data) => {
@@ -95,8 +95,53 @@ function viewDepartments() {
 
 // Adding Roles
 function addRoles() {
-  console.log("adding roles");
-  init();
+  // console.log("adding roles");
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the role's title",
+        name: "title",
+      },
+      {
+        type: "input",
+        message: "What is the role's salary?",
+        name: "salary",
+      },
+      {
+        type: "input",
+        message: "What department?",
+        name: "department",
+      },
+    ])
+    .then((response) => {
+      console.log(response.title);
+      console.log(response.salary);
+      console.log(response.department);
+      const queryString = "INSERT INTO role SET ?";
+      connection.query(
+        queryString,
+        {
+          title: response.title,
+          salary: response.salary,
+          department_id: response.department,
+        },
+        (err, data) => {
+          // if (err) throw err;
+          console.log("Added roles!!");
+          init();
+        }
+      );
+    });
+}
+// Viewing Roles
+function viewRoles() {
+  console.log("viewing roles");
+  connection.query("SELECT * FROM role", (err, data) => {
+    if (err) throw err;
+    console.table(data);
+    init();
+  });
 }
 // Adding Employees
 function addEmployees() {
@@ -104,11 +149,6 @@ function addEmployees() {
   init();
 }
 
-// Viewing Roles
-function viewRoles() {
-  console.log("viewing roles");
-  init();
-}
 // Viewing Employees
 function viewEmployees() {
   console.log("viewing employees");
