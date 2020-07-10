@@ -134,7 +134,7 @@ function addRoles() {
 // Viewing Roles
 function viewRoles() {
   // console.log("viewing roles");
-  connection.query("SELECT * FROM role", (err, data) => {
+  connection.query("SELECT role.id, role.title, role.salary, departments.name FROM role INNER JOIN departments ON role.department_id = departments.id", (err, data) => {
     if (err) throw err;
     console.table(data);
     init();
