@@ -147,7 +147,8 @@ function viewRoles() {
 }
 // Adding Employees
 function addEmployees() {
-  inquirer
+  connection.query("SELECT * FROM role", (err,results)=>{
+    inquirer
     .prompt([
       {
         type: "input",
@@ -160,9 +161,17 @@ function addEmployees() {
         message: "Enter employee's last name:",
       },
       {
-        type: "input",
-        name: "roleId",
+        type: "list",
+        name: "role",
         message: "Enter employee's role id:",
+        // let user select role by displaying role
+        choices:()=>{
+          const roleArray = [];
+          // iterate through the array and show user the role title
+          for(let i=0; i< results.length;i++){
+            roleArray.push(results[i].title)
+          }return roleArray;
+        }
       },
       {
         type: "input",
@@ -171,7 +180,15 @@ function addEmployees() {
       },
     ])
     .then((response) => {
-      // When finished prompting, insert all info into the employee database
+      // store the selected choice by user into variable which will later be assigned to role_id
+      console.log(response)
+      let selectedRole;
+      for(let i =0 ;i<results.length;i++){
+        if(results[i].title === response.role){
+          selectedRole = results[i]
+        }
+      }
+      // insert all info into the employee database
       const queryString = "INSERT INTO employee SET ?";
       connection.query(
         queryString,
@@ -179,7 +196,7 @@ function addEmployees() {
         {
           first_name: response.firstName,
           last_name: response.lastName,
-          role_id: response.roleId,
+          role_id: selectedRole.id,
           manager_id: response.managerId,
         },
         (err, data) => {
@@ -188,7 +205,9 @@ function addEmployees() {
         }
       );
     });
+})
 }
+  
 
 // Viewing Employees
 function viewEmployees() {
