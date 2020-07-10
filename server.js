@@ -96,7 +96,9 @@ function viewDepartments() {
 
 // Adding Roles
 function addRoles() {
-  inquirer
+  connection.query("SELECT * FROM departments",(err,results)=>{
+    if(err) throw err;
+    inquirer
     .prompt([
       {
         type: "input",
@@ -109,13 +111,28 @@ function addRoles() {
         name: "salary",
       },
       {
-        type: "input",
-        message: "What department?",
+        type: "list",
+        message: "What department is it in?",
         name: "department",
+         // let user select role by displaying department
+        choices: () =>{
+           // iterate through the results and push into array to be displayed
+          const departmentArray =[]
+          for(let i=0; i <results.length;i++){
+            departmentArray.push(results[i].name)
+          } return departmentArray
+        }
       },
     ])
     .then((response) => {
-      // When finished prompting, insert all info into the role database
+      console.log(response)
+      let newRole;
+      for(let i =0;i< results.length;i++){
+        if(results[i].name===response.department){
+          newRole = results[i]
+        }
+      }
+      //insert all info into the role database
       const queryString = "INSERT INTO role SET ?";
       connection.query(
         queryString,
@@ -123,7 +140,7 @@ function addRoles() {
         {
           title: response.title,
           salary: response.salary,
-          department_id: response.department,
+          department_id: newRole.id,
         },
         (err, data) => {
           if (err) throw err;
@@ -132,7 +149,9 @@ function addRoles() {
         }
       );
     });
+  })
 }
+  
 // Viewing Roles
 function viewRoles() {
   //Query for displaying the roles and joining department name on role's department_id
@@ -167,7 +186,7 @@ function addEmployees() {
         // let user select role by displaying role
         choices:()=>{
           const roleArray = [];
-          // iterate through the array and show user the role title
+         // iterate through the results and push into array to be displayed
           for(let i=0; i< results.length;i++){
             roleArray.push(results[i].title)
           }return roleArray;
