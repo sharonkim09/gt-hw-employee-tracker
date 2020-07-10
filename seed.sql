@@ -27,16 +27,31 @@ CREATE TABLE employee(
             PRIMARY KEY(id)
 );
 INSERT INTO departments(name)
-VALUES ("Sales"),("Finance");
+VALUES ("Engineering"),("Business"),("Sales"),("Finance"),("Operations"),("Advertising");
 
 SELECT * FROM departments;
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES ("Harry","Potter",2,1);
+VALUES ("Pam","Beesly",1,2);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("Michael","Scott",2,4);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("Dwight","Schrute",3,5);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("Jim","Halpert",4,5);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("Roy","Anderson",5,5);
 
 SELECT * FROM employee;
 
 INSERT INTO role(title,salary, department_id)
-VALUES("Intern", 20,4);
-
+VALUES("Lead Accountant", 40000,2);
+INSERT INTO role(title,salary, department_id)
+VALUES("Accountant", 504.90,4);
+INSERT INTO role(title,salary, department_id)
+VALUES("Jr Web Dev", 50000,1);
+INSERT INTO role(title,salary, department_id)
+VALUES("Clerk", 50000,5);
+INSERT INTO role(title,salary, department_id)
+VALUES("Financial Analyst", 50000,1);
 SELECT * FROM role;
