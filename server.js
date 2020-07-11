@@ -96,62 +96,63 @@ function viewDepartments() {
 
 // Adding Roles
 function addRoles() {
-  connection.query("SELECT * FROM departments",(err,results)=>{
-    if(err) throw err;
+  connection.query("SELECT * FROM departments", (err, results) => {
+    if (err) throw err;
     inquirer
-    .prompt([
-      {
-        type: "input",
-        message: "What is the role's title",
-        name: "title",
-      },
-      {
-        type: "input",
-        message: "What is the role's salary?",
-        name: "salary",
-      },
-      {
-        type: "list",
-        message: "What department is it in?",
-        name: "department",
-         // let user select role by displaying department
-        choices: () =>{
-           // iterate through the results and push into array to be displayed
-          const departmentArray =[]
-          for(let i=0; i <results.length;i++){
-            departmentArray.push(results[i].name)
-          } return departmentArray
-        }
-      },
-    ])
-    .then((response) => {
-      console.log(response)
-      let newRole;
-      for(let i =0;i< results.length;i++){
-        if(results[i].name===response.department){
-          newRole = results[i]
-        }
-      }
-      //insert all info into the role database
-      const queryString = "INSERT INTO role SET ?";
-      connection.query(
-        queryString,
-        // response from user are stored in same name as db parameters
+      .prompt([
         {
-          title: response.title,
-          salary: response.salary,
-          department_id: newRole.id,
+          type: "input",
+          message: "What is the role's title",
+          name: "title",
         },
-        (err, data) => {
-          if (err) throw err;
-          console.log("Added roles!!");
-          init();
+        {
+          type: "input",
+          message: "What is the role's salary?",
+          name: "salary",
+        },
+        {
+          type: "list",
+          message: "What department is it in?",
+          name: "department",
+          // let user select role by displaying department
+          choices: () => {
+            // iterate through the results and push into array to be displayed
+            const departmentArray = [];
+            for (let i = 0; i < results.length; i++) {
+              departmentArray.push(results[i].name);
+            }
+            return departmentArray;
+          },
+        },
+      ])
+      .then((response) => {
+        console.log(response);
+        let newRole;
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].name === response.department) {
+            newRole = results[i];
+          }
         }
-      );
-    });
-  })
+        //insert all info into the role database
+        const queryString = "INSERT INTO role SET ?";
+        connection.query(
+          queryString,
+          // response from user are stored in same name as db parameters
+          {
+            title: response.title,
+            salary: response.salary,
+            department_id: newRole.id,
+          },
+          (err, data) => {
+            if (err) throw err;
+            console.log("Added roles!!");
+            init();
+          }
+        );
+      });
+  });
 }
-  
+
 // Viewing Roles
 function viewRoles() {
   //Query for displaying the roles and joining department name on role's department_id
@@ -166,67 +167,67 @@ function viewRoles() {
 }
 // Adding Employees
 function addEmployees() {
-  connection.query("SELECT * FROM role", (err,results)=>{
+  connection.query("SELECT * FROM role", (err, results) => {
     inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "firstName",
-        message: "Enter employee's first name:",
-      },
-      {
-        type: "input",
-        name: "lastName",
-        message: "Enter employee's last name:",
-      },
-      {
-        type: "list",
-        name: "role",
-        message: "Enter employee's role id:",
-        // let user select role by displaying role
-        choices:()=>{
-          const roleArray = [];
-         // iterate through the results and push into array to be displayed
-          for(let i=0; i< results.length;i++){
-            roleArray.push(results[i].title)
-          }return roleArray;
-        }
-      },
-      {
-        type: "input",
-        name: "managerId",
-        message: "Enter employee's manager id",
-      },
-    ])
-    .then((response) => {
-      // store the selected choice by user into variable which will later be assigned to role_id
-      console.log(response)
-      let selectedRole;
-      for(let i =0 ;i<results.length;i++){
-        if(results[i].title === response.role){
-          selectedRole = results[i]
-        }
-      }
-      // insert all info into the employee database
-      const queryString = "INSERT INTO employee SET ?";
-      connection.query(
-        queryString,
-        // response from user are stored in same name as db parameters
+      .prompt([
         {
-          first_name: response.firstName,
-          last_name: response.lastName,
-          role_id: selectedRole.id,
-          manager_id: response.managerId,
+          type: "input",
+          name: "firstName",
+          message: "Enter employee's first name:",
         },
-        (err, data) => {
-          console.log("adding employees");
-          init();
+        {
+          type: "input",
+          name: "lastName",
+          message: "Enter employee's last name:",
+        },
+        {
+          type: "list",
+          name: "role",
+          message: "Enter employee's role id:",
+          // let user select role by displaying role
+          choices: () => {
+            const roleArray = [];
+            // iterate through the results and push into array to be displayed
+            for (let i = 0; i < results.length; i++) {
+              roleArray.push(results[i].title);
+            }
+            return roleArray;
+          },
+        },
+        {
+          type: "input",
+          name: "managerId",
+          message: "Enter employee's manager id",
+        },
+      ])
+      .then((response) => {
+        // store the selected choice by user into variable which will later be assigned to role_id
+        console.log(response);
+        let selectedRole;
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].title === response.role) {
+            selectedRole = results[i];
+          }
         }
-      );
-    });
-})
+        // insert all info into the employee database
+        const queryString = "INSERT INTO employee SET ?";
+        connection.query(
+          queryString,
+          // response from user are stored in same name as db parameters
+          {
+            first_name: response.firstName,
+            last_name: response.lastName,
+            role_id: selectedRole.id,
+            manager_id: response.managerId,
+          },
+          (err, data) => {
+            console.log("adding employees");
+            init();
+          }
+        );
+      });
+  });
 }
-  
 
 // Viewing Employees
 function viewEmployees() {
@@ -245,33 +246,37 @@ function viewEmployees() {
 function exit() {
   connection.end();
 }
-// Updating Employees
-function updateEmployeeRoles() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "currentRoleId",
-        message: "What is employee's role id you wish to change?",
-      },
-      {
-        type: "input",
-        message: "what is employee's new role id?",
-        name: "newRoleId",
-      },
-    ])
-    .then((response) => {
-      //Query for updating an employee
-      connection.query(
-        "UPDATE employee SET ?",
-        {
-          role_id: response.newRoleId,
-        },
-        (err, data) => {
-          if (err) throw err;
-          console.log("Successfully updated role");
-        }
-      );
-    });
-}
 
+// updating employee roles
+function updateEmployeeRoles() {
+  connection.query("SELECT * FROM employee", (err, res) => {
+    if (err) throw err;
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          message: "Which employee role do you want to update?",
+          name: "updateEmployee",
+          choices: () => {
+            const employeeArray = [];
+            for (let i = 0; i < res.length; i++) {
+              // push the title
+              employeeArray.push(res[i].title)
+            }return employeeArray
+          },
+        },
+      ])
+      .then((response) => {
+        console.log("okay, updating");
+        connection.query(
+          "UPDATE employee SET role_id =? WHERE id=?",
+          [response.role, response.employee],
+          (err, data) => {
+            if (err) throw err;
+            console.log(res.affectedRows + " employee's role updated");
+          }
+        );
+      });
+  });
+}
+// error:cannot read type of undefined

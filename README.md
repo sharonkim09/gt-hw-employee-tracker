@@ -23,7 +23,9 @@ This is a server side application that builds a solution for managing a company'
 
 
 ## Credits
-This design was designed by the curriculum team. The instructions were provided to me by GT Full Stack Coding Program.
+This design was designed by the curriculum team. The instructions were provided to me by GT Full Stack Coding Program. 
+ 
+Thanks to the lectures and class activities I was able to 
 
 ## License
 MIT License
