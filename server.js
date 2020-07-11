@@ -248,6 +248,7 @@ function exit() {
 }
 
 // updating employee roles
+// need to access employee tb
 function updateEmployeeRoles() {
   connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err;
@@ -259,10 +260,15 @@ function updateEmployeeRoles() {
           name: "updateEmployee",
           choices: () => {
             const employeeArray = [];
+            // loop through the results
             for (let i = 0; i < res.length; i++) {
-              // push the title
-              employeeArray.push(res[i].title)
-            }return employeeArray
+              // push the titles into the employee array
+              console.log(res[i].firstName)
+              // using template literals to retrieve the first and last names then pushing into array
+              employeeArray.push(`${res[i].first_name} ${res[i].last_name}`)
+            }
+            // return employee array with employee names
+            return employeeArray
           },
         },
       ])
