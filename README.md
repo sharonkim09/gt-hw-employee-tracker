@@ -11,6 +11,7 @@ This is a server side application that builds a solution for managing a company'
 * [Credits](#credits)
 * [License](#license)
 * [Contributing](#contributing)
+* [Future Development](#future-Development)
 
 ## Installation
 1. Clone the repo
@@ -18,7 +19,11 @@ This is a server side application that builds a solution for managing a company'
 
 ## Usage
 
-[Link to Demo of Application]()
+[Link to View Demo of Application](https://drive.google.com/file/d/1g5jV0QVgRB6ogPDYvBFQ7HBWYrP6QrwO/view)
+
+![Gif Demonstration](./Assets/employee-demonstration.gif)
+
+
 
 
 
@@ -55,3 +60,10 @@ SOFTWARE.
 ## Contributing
 
 We are not currently accepting contributors at the moment.
+
+## Future Development
+
+* Updating employee managers
+* View employees by manager
+* Delete departments, roles and employees
+* Viewing total utilized budget of a department
