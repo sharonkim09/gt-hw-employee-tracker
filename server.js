@@ -228,7 +228,6 @@ function addEmployees() {
       });
   });
 }
-
 // Viewing Employees
 function viewEmployees() {
   ////Query for displaying the employees and joining department & role db name and on role's department_id
@@ -241,14 +240,11 @@ function viewEmployees() {
     }
   );
 }
-
 // Exiting application
 function exit() {
   connection.end();
 }
-
 // updating employee roles
-// need to access employee tb
 function updateEmployeeRoles() {
   connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err;
@@ -262,27 +258,72 @@ function updateEmployeeRoles() {
             const employeeArray = [];
             // loop through the results
             for (let i = 0; i < res.length; i++) {
-              // push the titles into the employee array
-              console.log(res[i].firstName)
               // using template literals to retrieve the first and last names then pushing into array
-              employeeArray.push(`${res[i].first_name} ${res[i].last_name}`)
+              employeeArray.push(`${res[i].first_name} ${res[i].last_name}`);
             }
             // return employee array with employee names
-            return employeeArray
+            return employeeArray;
           },
         },
       ])
       .then((response) => {
-        console.log("okay, updating");
-        connection.query(
-          "UPDATE employee SET role_id =? WHERE id=?",
-          [response.role, response.employee],
-          (err, data) => {
-            if (err) throw err;
-            console.log(res.affectedRows + " employee's role updated");
+        // console.log(response);
+        let employeeSelected;
+        // loop through and if user selection matches first&last name, use as employee selected
+        for (let i = 0; i < res.length; i++) {
+          if (
+            `${res[i].first_name} ${res[i].last_name}` === response.employee
+          ) {
+            employeeSelected = results[i];
+            console.log(employeeSelected);
           }
-        );
+        }
+        // query for user selecting new role
+        connection.query("SELECT * FROM role", (err, res) => {
+          if (err) throw err;
+          inquirer
+            .prompt([
+              {
+                type: "list",
+                name: "role",
+                message: "What is the employee's new role?",
+                // list the role titles by pushing the results into array
+                choices: () => {
+                  const roleArray = [];
+                  // iterate through the role titles and push into array to be displayed
+                  for (let i = 0; i < res.length; i++) {
+                    roleArray.push(res[i].title);
+                  }
+                  return roleArray;
+                },
+              },
+            ])
+            .then((response) => {
+              // console.log(response);
+              let updatedRole;
+              // store the selected updated role by user into variable which will later be used 
+              for (let i = 0; i < res.length; i++) {
+                if (res[i].length === response.role) {
+                  updatedRole = results[i];
+                  // console.log(updatedRole);
+                }
+              }
+              // after user selects the new role we need to use UPDATE query to actually change role
+             const queryString = "UPDATE employee SET ? WHERE ?";
+              connection.query(
+                queryString,
+                [
+                  {role_id:response.role},
+                  {id:response.updateEmployee}
+                ],
+                (err, data) => {
+                  if (err) throw err;
+                  console.log("Role updated");
+                  init();
+                }
+              );
+            });
+        });
       });
   });
 }
-// error:cannot read type of undefined
